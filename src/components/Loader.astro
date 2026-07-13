@@ -1,0 +1,150 @@
+---
+const resources = [
+    "MOUNTING FILESYSTEM",
+    "LOADING FONTS/INCONSOLATA",
+    "LOADING FONTS/THE-NIGHT-WATCH",
+    "FETCHING ASSETS/BACKGROUND",
+    "CONNECTING TO SERVER",
+    "COMPILING COMPONENTS",
+    "RESOLVING DEPENDENCIES",
+    "CACHING STATIC ROUTES",
+    "OPTIMIZING RENDER TREE",
+];
+const year = new Date().getFullYear();
+---
+
+<div id="loader-overlay" class="fixed inset-0 z-[9999] bg-[#20262a] text-white">
+    <div class="grid grid-cols-12 h-full w-full px-6 py-8 md:px-12 md:py-10">
+        <section class="col-span-12 md:col-span-4 flex flex-col min-h-0 pr-4">
+            <p class="uppercase text-[11px] tracking-widest opacity-60 mb-3">RESOURCES</p>
+            <div
+                id="loader-log"
+                class="flex-1 overflow-hidden text-[11px] md:text-[12px] leading-relaxed"
+            >
+            </div>
+        </section>
+
+        <section
+            class="col-span-12 md:col-span-4 flex flex-col items-center justify-center order-first md:order-none mb-10 md:mb-0"
+        >
+            <p class="uppercase text-[11px] tracking-widest opacity-60 mb-4">LOADING</p>
+            <p id="loader-percent" class="font-nightwatch text-[1rem] leading-none">0%</p>
+            <div
+                class="w-full max-w-[220px] h-[2px] bg-white/15 mt-6 relative overflow-hidden"
+            >
+                <div
+                    id="loader-bar"
+                    class="absolute inset-y-0 left-0 bg-white"
+                    style="width: 0%"
+                >
+                </div>
+            </div>
+        </section>
+
+        <section
+            class="col-span-12 md:col-span-4 flex flex-col justify-between items-start md:items-end text-left md:text-right"
+        >
+            <div>
+                <p class="uppercase text-[11px] tracking-widest opacity-60 mb-2">
+                    STATUS
+                </p>
+                <p id="loader-message" class="text-[14px] font-bold">
+                    INITIALIZING PORTFOLIO...
+                </p>
+            </div>
+            <div class="text-[11px] opacity-60 leading-relaxed mt-10 md:mt-0">
+                <p>MAICOL ROJAS &mdash; SOFTWARE ENGINEER</p>
+                <p>&copy; {year} ALL RIGHTS RESERVED.</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script define:vars={{ resources }}>
+    const overlay = document.getElementById("loader-overlay");
+    const log = document.getElementById("loader-log");
+    const percentEl = document.getElementById("loader-percent");
+    const barEl = document.getElementById("loader-bar");
+    const messageEl = document.getElementById("loader-message");
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function hideLoader() {
+        document.body.style.overflow = "";
+        overlay.style.opacity = "0";
+        window.setTimeout(() => overlay.remove(), 500);
+    }
+
+    if (reduceMotion) {
+        hideLoader();
+    } else {
+        document.body.style.overflow = "hidden";
+        overlay.style.transition = "opacity 0.5s ease";
+
+        const total = resources.length;
+        let completed = 0;
+
+        function processNext(i) {
+            if (i >= total) {
+                messageEl.textContent = "SYSTEM READY";
+                window.setTimeout(hideLoader, 450);
+                return;
+            }
+
+            const line = document.createElement("p");
+            line.className = "whitespace-nowrap";
+            line.textContent = `> ${resources[i]}...`;
+            log.appendChild(line);
+            log.scrollTop = log.scrollHeight;
+
+            const delay = 150 + Math.random() * 220;
+            window.setTimeout(() => {
+                line.textContent = `> ${resources[i]} [OK]`;
+                completed += 1;
+
+                const pct = Math.round((completed / total) * 100);
+                percentEl.textContent = `${pct}%`;
+                barEl.style.width = `${pct}%`;
+
+                processNext(i + 1);
+            }, delay);
+        }
+
+        processNext(0);
+    }
+</script>
+
+<style>
+    #loader-log p {
+        font-family: "Inconsolata", monospace;
+    }
+
+    #loader-log p::after {
+        content: "";
+    }
+
+    #loader-percent {
+        font-family: "Inconsolata", monospace;
+    }
+
+    #loader-log p:last-child::after {
+        content: "_";
+        margin-left: 2px;
+        animation: blink 1s steps(1) infinite;
+    }
+
+    #loader-bar {
+        transition: width 0.2s ease;
+    }
+
+    @keyframes blink {
+        0%,
+        49% {
+            opacity: 1;
+        }
+        50%,
+        100% {
+            opacity: 0;
+        }
+    }
+</style>

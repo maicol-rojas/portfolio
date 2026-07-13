@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+import Loader from "../components/Loader.astro";
 ---
 
 <!doctype html>
@@ -19,7 +21,8 @@ import "../styles/global.css";
 		<title>maicol rojas - portfolio</title>
 	</head>
 
-	<body class="px-2 lg:px-16">
+	<body class="px-2 lg:px-12">
+		<Loader />
 		<slot />
 	</body>
 </html>
