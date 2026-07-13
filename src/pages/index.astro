@@ -1,11 +1,65 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+    <main class="grid grid-cols-12 flex-1 min-h-0 px-8 py-6">
+        <section class="col-span-12 md:col-span-4">
+            <h2 class="py-0 m-0 font-nightwatch">DEVELOPER PORTFOLIO</h2>
+
+            <p class="w-full max-w-[500px] text-[14px] font-bold my-4">
+                I WORK AS A SOFTWARE ENGINEER WITH A FOCUS ON FULL-STACK DEVELOPMENT,
+                USING TECHNOLOGIES SUCH AS ANGULAR AND SPRING TO BUILD SCALABLE ENTERPRISE
+                AND INSTITUTIONAL WEB APPLICATIONS.
+                <br />
+                <br />
+                I HAVE WORKED ON A VARIETY OF TECHNOLOGICAL SOLUTIONS AND INDEPENDENT PROJECTS,
+                ALWAYS PRIORITIZING CODE QUALITY, SCALABILITY, MAINTAINABILITY, AND STRONG ATTENTION
+                TO DETAIL.
+            </p>
+        </section>
+        <section class="col-span-6"></section>
+        <section
+            class="col-span-12 md:col-span-2 flex flex-column items-start justify-end mt-2 md:mt-0"
+        >
+            <p class="cursor-pointer resume-text">DOWNLOAD RESUME</p>
+        </section>
+    </main>
+
+    <style>
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
+        .resume-text {
+            position: relative;
+            display: inline-block;
+            width: fit-content;
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .resume-text::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+
+            width: 100%;
+            height: 2px;
+
+            background-color: #ffff;
+
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .resume-text:hover::after {
+            transform: scaleX(1);
+        }
+    </style>
 </Layout>
