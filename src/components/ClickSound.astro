@@ -1,0 +1,10 @@
+<script>
+    const clickAudio = new Audio("/audio/sounds/click.wav");
+    clickAudio.preload = "auto";
+
+    document.addEventListener("click", () => {
+        const sound = clickAudio.cloneNode(true) as HTMLAudioElement;
+        sound.volume = clickAudio.volume;
+        sound.play().catch(() => {});
+    });
+</script>

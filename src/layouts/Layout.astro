@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
 import Loader from "../components/Loader.astro";
+import ClickSound from "../components/ClickSound.astro";
 ---
 
 <!doctype html>
@@ -22,7 +23,9 @@ import Loader from "../components/Loader.astro";
 	</head>
 
 	<body class="px-2 lg:px-12">
+		<ClickSound />
 		<Loader />
+
 		<slot />
 	</body>
 </html>
