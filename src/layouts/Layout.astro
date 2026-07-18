@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import Loader from "../components/Loader.astro";
 import ClickSound from "../components/ClickSound.astro";
+
+const { navVariant = "default", hideFooter = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,6 +20,7 @@ import ClickSound from "../components/ClickSound.astro";
 			href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
 			rel="stylesheet"
 		/>
+		<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
 
 		<meta name="generator" content={Astro.generator} />
 		<title>maicol rojas - portfolio</title>
@@ -26,9 +29,9 @@ import ClickSound from "../components/ClickSound.astro";
 	<body class="px-2 h-dvh flex flex-col overflow-hidden">
 		<ClickSound />
 		<Loader />
-		<Navbar />
+		<Navbar variant={navVariant} />
 		<slot />
-		<Footer />
+		{!hideFooter && <Footer />}
 	</body>
 </html>
 
