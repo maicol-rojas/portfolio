@@ -1,0 +1,124 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout navVariant="nav" hideFooter>
+    <main class="grid grid-cols-1 md:grid-cols-13 flex-1 min-h-0 px-8 py-6">
+        <section class="col-span-1 md:col-span-6 flex flex-col justify-end h-full">
+            <span class="hero-text hero-text--main">FULLSTACK</span>
+            <span class="hero-text hero-text--sub">DEVELOPER</span>
+        </section>
+
+        <section class="col-span-3"></section>
+
+        <section class="col-span-1 md:col-span-4 flex flex-col overflow-y-auto">
+            <h2 class="text-left description-text subtitle mb-4">BIO</h2>
+            <p class="text-left description-text">
+                I'M MAICOL ROJAS, A COLOMBIAN SOFTWARE ENGINEER, 23 YEARS OLD, SPECIALIZED
+                IN FULL STACK DEVELOPMENT. OVER THE LAST 2 YEARS, I'VE DESIGNED AND
+                IMPLEMENTED WEB SOLUTIONS AND INFORMATION SYSTEMS USING SPRING BOOT AND
+                ANGULAR AS MY MAIN STACK.
+                <br /><br />
+                I HANDLE THE FULL DEVELOPMENT CYCLE: ANALYZING REQUIREMENTS, MODELING DATA,
+                DESIGNING BACKEND ARCHITECTURE, BUILDING FRONTEND INTERFACES, AND INTEGRATING
+                SERVICES, WITH A FOCUS ON CODE QUALITY AT EVERY STAGE. I PRIORITIZE SCALABLE,
+                WELL-STRUCTURED SOLUTIONS.
+                <br /><br />
+                IN MY FREE TIME, I DIVE DEEPER INTO APPLIED CYBERSECURITY AS A COMPLEMENT TO
+                MY PROFILE AS A DEVELOPER.
+            </p>
+
+            <h2 class="text-left description-text subtitle mb-4 mt-8">STACK</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="flex flex-col">
+                    <span class="stack-label description-text">BACK</span>
+                    <p class="description-text">JAVA</p>
+                    <p class="description-text">SPRING</p>
+                    <p class="description-text">PYTHON</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="stack-label description-text">FRONT</span>
+                    <p class="description-text">ANGULAR</p>
+                    <p class="description-text">ASTRO</p>
+                    <p class="description-text">THREEJS</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="stack-label description-text">DATA</span>
+                    <p class="description-text">ORACLE</p>
+                    <p class="description-text">MONGODB</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="stack-label description-text">CLOUD & DEVOPS</span>
+                    <p class="description-text">DOCKER</p>
+                    <p class="description-text">VERCEL</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="stack-label description-text">TOOLS</span>
+                    <p class="description-text">GIT</p>
+                    <p class="description-text">GITHUB</p>
+                    <p class="description-text">GITLAB</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="stack-label description-text">AI</span>
+                    <p class="description-text">CLAUDE</p>
+                </div>
+            </div>
+
+            <h2 class="text-left description-text subtitle mb-4 mt-8">LANGUAGE</h2>
+            <div class="flex flex-col">
+                <p class="description-text">SPANISH — NATIVE</p>
+                <p class="description-text">ENGLISH — B2</p>
+            </div>
+
+            <h2 class="text-left description-text subtitle mb-4 mt-8">LOCATION</h2>
+            <div class="flex flex-col">
+                <p class="description-text">TUNJA, BOYACA, COLOMBIA</p>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        .hero-text {
+            display: block;
+            font-family: var(--font-satoshi);
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .hero-text--main {
+            font-size: 140px;
+        }
+
+        .hero-text--sub {
+            font-size: 140px;
+        }
+
+        .description-text {
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+        }
+
+        .stack-label {
+            display: block;
+            opacity: 0.5;
+            font-size: 0.85em;
+            margin-bottom: 0.25em;
+        }
+
+        .subtitle {
+            opacity: 0.5;
+        }
+
+        .subtitle::before {
+            content: "{";
+        }
+
+        .subtitle::after {
+            content: "}";
+        }
+    </style>
+</Layout>
