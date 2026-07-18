@@ -1,4 +1,6 @@
 ---
+const { variant = "default" } = Astro.props;
+
 const today = new Date()
     .toLocaleDateString("en-GB", {
         day: "2-digit",
@@ -6,19 +8,79 @@ const today = new Date()
         year: "numeric",
     })
     .replace(/\//g, ".");
+
+const navItems = [
+    { label: "HOME", href: "/" },
+    { label: "ABOUT", href: "/about" },
+    { label: "PROJECT", href: "/#projects" },
+    { label: "CONTACT", href: "/#contact" },
+];
 ---
 
 <header class="flex flex-row items-center justify-between py-6 px-4">
-    <a href="#hero" class="brand-text" data-text="MAICOL ROJAS">
+    <a
+        href={variant === "nav" ? "/" : "#hero"}
+        class="brand-text"
+        data-text="MAICOL ROJAS"
+    >
         <span>MAICOL ROJAS</span>
     </a>
 
-    <span class="date-text">{today}</span>
+    {
+        variant === "default" && (
+            <>
+                <span class="date-text">{today}</span>
 
-    <a href="#about" class="items-text" data-text="ABOUT">
-        <span>ABOUT</span>
-    </a>
+                <a href="/about" class="items-text" data-text="ABOUT">
+                    <span>ABOUT</span>
+                </a>
+            </>
+        )
+    }
+
+    {
+        variant === "nav" && (
+            <nav class="nav-items">
+                {navItems.map((item) => (
+                    <a href={item.href} class="items-text" data-text={item.label}>
+                        <span>{item.label}</span>
+                    </a>
+                ))}
+            </nav>
+        )
+    }
+
+    <button
+        id="theme-toggle"
+        type="button"
+        class="theme-toggle"
+        aria-label="Cambiar combinación de color"
+        title="Cambiar color"
+    >
+        ◐
+    </button>
 </header>
+
+<script>
+    const themes = [
+        { bg: "#323B3F", fg: "#ffffff" },
+        { bg: "#f3e8bc", fg: "#035352" },
+        { bg: "#ffecae", fg: "#f17141" },
+        { bg: "#ee6c4d", fg: "#20201f" },
+        { bg: "#f3eee5", fg: "#0b0b0b" },
+        { bg: "#ff6044", fg: "#121313" },
+    ];
+
+    let index = 0;
+
+    const button = document.getElementById("theme-toggle");
+    button?.addEventListener("click", () => {
+        index = (index + 1) % themes.length;
+        const { bg, fg } = themes[index];
+        document.body.style.backgroundColor = bg;
+        document.body.style.color = fg;
+    });
+</script>
 
 <style>
     .brand-text,
@@ -90,5 +152,42 @@ const today = new Date()
 
     .items-text.selected {
         color: #f7e49b;
+    }
+
+    .nav-items {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+
+        opacity: 0;
+        animation: drop-in 0.6s ease forwards;
+        animation-delay: 0.1s;
+    }
+
+    .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+
+        font-size: 16px;
+        line-height: 1;
+
+        color: inherit;
+        background: transparent;
+        border: 1px solid currentColor;
+        border-radius: 999px;
+        cursor: pointer;
+
+        opacity: 0;
+        animation: drop-in 0.6s ease forwards;
+        animation-delay: 0.2s;
+
+        transition: transform 0.35s ease;
+    }
+
+    .theme-toggle:hover {
+        transform: rotate(180deg);
     }
 </style>
