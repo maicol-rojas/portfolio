@@ -1,5 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+const availabilityText = "AVAILABLE FOR WORK — NATIONAL OR INTERNATIONAL";
+const tickerRepeats = Array.from({ length: 14 });
 ---
 
 <Layout navVariant="nav" hideFooter>
@@ -9,7 +12,24 @@ import Layout from "../layouts/Layout.astro";
             <span class="hero-text hero-text--sub">DEVELOPER</span>
         </section>
 
-        <section class="col-span-3"></section>
+        <section class="col-span-3 relative h-full overflow-hidden">
+            <div class="ticker">
+                <div class="ticker-column">
+                    {
+                        tickerRepeats.map(() => (
+                            <span class="ticker-text">{availabilityText}</span>
+                        ))
+                    }
+                </div>
+                <div class="ticker-column" aria-hidden="true">
+                    {
+                        tickerRepeats.map(() => (
+                            <span class="ticker-text">{availabilityText}</span>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
 
         <section class="col-span-1 md:col-span-4 flex flex-col overflow-y-auto">
             <h2 class="text-left description-text subtitle mb-4">BIO</h2>
@@ -119,6 +139,47 @@ import Layout from "../layouts/Layout.astro";
 
         .subtitle::after {
             content: "}";
+        }
+
+        .ticker {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: ticker-scroll 22s linear infinite;
+        }
+
+        .ticker-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+            padding-block: 20px;
+        }
+
+        .ticker-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            white-space: nowrap;
+            font-family: var(--font-satoshi);
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.75rem;
+            background-color: var(--theme-fg);
+            color: var(--theme-bg);
+        }
+
+        @keyframes ticker-scroll {
+            from {
+                transform: translateY(-50%);
+            }
+            to {
+                transform: translateY(0%);
+            }
         }
     </style>
 </Layout>

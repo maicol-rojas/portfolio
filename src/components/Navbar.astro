@@ -77,8 +77,8 @@ const navItems = [
     button?.addEventListener("click", () => {
         index = (index + 1) % themes.length;
         const { bg, fg } = themes[index];
-        document.body.style.backgroundColor = bg;
-        document.body.style.color = fg;
+        document.documentElement.style.setProperty("--theme-bg", bg);
+        document.documentElement.style.setProperty("--theme-fg", fg);
     });
 </script>
 
