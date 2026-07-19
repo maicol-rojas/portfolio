@@ -216,8 +216,26 @@ export default function ParticlePortrait({
     let particles = null;
     let planeMesh = null;
     let introStart = null;
+    let particlesReady = false;
+    // El Loader (overlay de carga inicial) cubre toda la pantalla; si la
+    // animación de dispersión arranca antes de que termine, transcurre
+    // invisible detrás del overlay. Esperamos su señal de "listo" antes de
+    // iniciar el intro.
+    let loaderReady = window.__loaderDone === true;
     const raycaster = new THREE.Raycaster();
     const pointerNDC = new THREE.Vector2(-999, -999);
+
+    function maybeStartIntro() {
+      if (particlesReady && loaderReady && introStart === null) {
+        introStart = clock.getElapsedTime();
+      }
+    }
+
+    function handleLoaderComplete() {
+      loaderReady = true;
+      maybeStartIntro();
+    }
+    window.addEventListener('loader:complete', handleLoaderComplete);
 
     function onPointerMove(clientX, clientY) {
       const rect = container.getBoundingClientRect();
@@ -359,7 +377,8 @@ export default function ParticlePortrait({
       scene.add(planeMesh);
 
       camera.position.z = Math.max(width, height) * 1.1;
-      introStart = clock.getElapsedTime();
+      particlesReady = true;
+      maybeStartIntro();
     });
 
     function resize() {
@@ -412,6 +431,7 @@ export default function ParticlePortrait({
       destroyed = true;
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('loader:complete', handleLoaderComplete);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('touchmove', handleTouchMove);
       renderer.dispose();

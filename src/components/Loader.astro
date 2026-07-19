@@ -72,7 +72,11 @@ const year = new Date().getFullYear();
     function hideLoader() {
         document.body.style.overflow = "";
         overlay.style.opacity = "0";
-        window.setTimeout(() => overlay.remove(), 500);
+        window.setTimeout(() => {
+            overlay.remove();
+            window.__loaderDone = true;
+            window.dispatchEvent(new CustomEvent("loader:complete"));
+        }, 500);
     }
 
     if (reduceMotion) {
