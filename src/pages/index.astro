@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ParticlePortrait from "../components/ParticlePortrait.jsx";
 ---
 
 <Layout>
@@ -9,7 +10,11 @@ import Layout from "../layouts/Layout.astro";
         </section>
 
         <section class="col-span-1 md:col-span-9 flex flex-col justify-center">
-            <!-- <h2 class="py-0 m-0 font-nightwatch">DEVELOPER PORTFOLIO</h2> -->
+            <ParticlePortrait
+                client:only="react"
+                imageSrc="/images/particle-index-reference.jpg"
+                className="w-full h-full"
+            />
         </section>
 
         <section class="col-span-1 flex md:flex justify-end items-center mt-2 md:mt-0">
