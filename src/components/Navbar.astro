@@ -1,13 +1,19 @@
 ---
 const { variant = "default" } = Astro.props;
 
-const today = new Date()
+const now = new Date();
+const today = now
     .toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
     })
     .replace(/\//g, ".");
+const currentTime = now.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+});
 
 const navItems = [
     { label: "HOME", href: "/" },
@@ -29,7 +35,9 @@ const navItems = [
     {
         variant === "default" && (
             <>
-                <span class="date-text">{today}</span>
+                <span class="date-text" id="date-time-text" data-date={today}>
+                    {today} - {currentTime}
+                </span>
 
                 <a href="/about" class="items-text" data-text="ABOUT">
                     <span>ABOUT</span>
@@ -80,6 +88,35 @@ const navItems = [
         document.documentElement.style.setProperty("--theme-bg", bg);
         document.documentElement.style.setProperty("--theme-fg", fg);
     });
+
+    function updateDateTime() {
+        const el = document.getElementById("date-time-text");
+        if (!el) return;
+
+        const now = new Date();
+        const date = now
+            .toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            })
+            .replace(/\//g, ".");
+        const time = now.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        });
+        el.textContent = `${date} - ${time}`;
+    }
+
+    if (document.getElementById("date-time-text")) {
+        // se alinea al cambio de minuto exacto y luego se repite cada 60s
+        const msToNextMinute = 60000 - (Date.now() % 60000);
+        window.setTimeout(() => {
+            updateDateTime();
+            window.setInterval(updateDateTime, 60000);
+        }, msToNextMinute);
+    }
 </script>
 
 <style>
