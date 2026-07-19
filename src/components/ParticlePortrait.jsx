@@ -5,8 +5,8 @@ import * as THREE from 'three';
  * ParticlePortrait
  * ------------------------------------------------------------------
  * Isla de React para Astro. Convierte una imagen en un campo de
- * partículas instanciadas (Three.js) que reaccionan al mouse/touch
- * mediante una textura de "estela" (offscreen canvas).
+ * partículas instanciadas (Three.js) que se dispersan y convergen en
+ * la imagen al montarse.
  *
  * Uso en Astro:
  *   <ParticlePortrait client:only="react" imageSrc="/img/retrato.jpg" />
@@ -37,15 +37,12 @@ const VERTEX_SHADER = /* glsl */ `
 
   attribute vec3 offset;
   attribute float pindex;
-  attribute float angle;
   attribute vec3 color; // RGB real del píxel, capturado al leer la imagen
 
   uniform float uTime;
   uniform float uRandom;
   uniform float uDepth;
   uniform float uSize;
-  uniform sampler2D uTouch;
-  uniform vec2 uTextureSize;
   uniform float uProgress; // 0 = disperso, 1 = imagen formada
   uniform float uDispersion;
 
@@ -81,14 +78,6 @@ const VERTEX_SHADER = /* glsl */ `
     // oscilación en z basada en tiempo
     float rndz = random(pindex) + sin(uTime * 0.5 + pindex);
     displaced.z += rndz * uDepth * random(pindex);
-
-    // lectura de la textura de "touch" (estela del mouse)
-    vec2 puv = offset.xy / uTextureSize;
-    float t = texture2D(uTouch, puv).r;
-
-    displaced.z += t * 18.0;
-    displaced.x += cos(angle) * t * 18.0;
-    displaced.y += sin(angle) * t * 18.0;
 
     // tamaño por partícula (brillo real del píxel + variación)
     float brightness = dot(color, vec3(0.21, 0.72, 0.07));
@@ -177,44 +166,7 @@ export default function ParticlePortrait({
     const camera = new THREE.PerspectiveCamera(45, 1, 1, 10000);
     camera.position.z = 300;
 
-    // --- Textura de "touch" (estela del mouse), dibujada en un canvas offscreen
-    const touchCanvas = document.createElement('canvas');
-    touchCanvas.width = 64;
-    touchCanvas.height = 64;
-    const touchCtx = touchCanvas.getContext('2d');
-    const touchTexture = new THREE.CanvasTexture(touchCanvas);
-    let trail = [];
-    const maxAge = 60;
-
-    function drawTouchTexture() {
-      touchCtx.globalCompositeOperation = 'source-over';
-      touchCtx.clearRect(0, 0, touchCanvas.width, touchCanvas.height);
-      touchCtx.globalCompositeOperation = 'lighter';
-
-      trail.forEach((point, i) => {
-        point.age++;
-        if (point.age > maxAge) {
-          trail.splice(i, 1);
-          return;
-        }
-        const ease = 1 - point.age / maxAge;
-        const radius = 12 * ease;
-        const gradient = touchCtx.createRadialGradient(
-          point.x, point.y, 0,
-          point.x, point.y, radius
-        );
-        gradient.addColorStop(0, `rgba(255,255,255,${ease})`);
-        gradient.addColorStop(1, 'rgba(255,255,255,0)');
-        touchCtx.fillStyle = gradient;
-        touchCtx.fillRect(point.x - radius, point.y - radius, radius * 2, radius * 2);
-      });
-
-      touchTexture.needsUpdate = true;
-    }
-
-    // --- Plano invisible para raycasting (recibe el mouse/touch)
     let particles = null;
-    let planeMesh = null;
     let introStart = null;
     let particlesReady = false;
     // El Loader (overlay de carga inicial) cubre toda la pantalla; si la
@@ -222,8 +174,6 @@ export default function ParticlePortrait({
     // invisible detrás del overlay. Esperamos su señal de "listo" antes de
     // iniciar el intro.
     let loaderReady = window.__loaderDone === true;
-    const raycaster = new THREE.Raycaster();
-    const pointerNDC = new THREE.Vector2(-999, -999);
 
     function maybeStartIntro() {
       if (particlesReady && loaderReady && introStart === null) {
@@ -236,20 +186,6 @@ export default function ParticlePortrait({
       maybeStartIntro();
     }
     window.addEventListener('loader:complete', handleLoaderComplete);
-
-    function onPointerMove(clientX, clientY) {
-      const rect = container.getBoundingClientRect();
-      pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-      pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-    }
-
-    const handleMouseMove = (e) => onPointerMove(e.clientX, e.clientY);
-    const handleTouchMove = (e) => {
-      if (e.touches[0]) onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
-    };
-
-    container.addEventListener('mousemove', handleMouseMove);
-    container.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     // --- Construcción de las partículas a partir de la imagen
     const loader = new THREE.TextureLoader();
@@ -319,7 +255,6 @@ export default function ParticlePortrait({
 
       const indices = new Float32Array(numVisible);
       const offsets = new Float32Array(numVisible * 3);
-      const angles = new Float32Array(numVisible);
       // const visibleGreys = new Float32Array(numVisible); // color anterior
       const colors = new Float32Array(numVisible * 3);
 
@@ -334,7 +269,6 @@ export default function ParticlePortrait({
         offsets[j * 3 + 1] = y;
         offsets[j * 3 + 2] = 0;
         indices[j] = i;
-        angles[j] = Math.random() * Math.PI * 2;
         // visibleGreys[j] = greys[i]; // color anterior
         colors[j * 3 + 0] = pixelColors[i * 3 + 0];
         colors[j * 3 + 1] = pixelColors[i * 3 + 1];
@@ -344,7 +278,6 @@ export default function ParticlePortrait({
 
       geometry.setAttribute('pindex', new THREE.InstancedBufferAttribute(indices, 1));
       geometry.setAttribute('offset', new THREE.InstancedBufferAttribute(offsets, 3));
-      geometry.setAttribute('angle', new THREE.InstancedBufferAttribute(angles, 1));
       // geometry.setAttribute('grey', new THREE.InstancedBufferAttribute(visibleGreys, 1)); // color anterior
       geometry.setAttribute('color', new THREE.InstancedBufferAttribute(colors, 3));
 
@@ -358,8 +291,6 @@ export default function ParticlePortrait({
           uRandom: { value: randomness },
           uDepth: { value: depth },
           uSize: { value: particleSize },
-          uTouch: { value: touchTexture },
-          uTextureSize: { value: new THREE.Vector2(width, height) },
           // uColorLight: { value: hexToVec3(PALETTE.light) }, // color anterior
           // uColorDark: { value: hexToVec3(PALETTE.dark) }, // color anterior
           uProgress: { value: 0 },
@@ -369,12 +300,6 @@ export default function ParticlePortrait({
 
       particles = new THREE.Mesh(geometry, material);
       scene.add(particles);
-
-      // plano invisible del mismo tamaño para el raycaster
-      const planeGeo = new THREE.PlaneGeometry(width, height);
-      const planeMat = new THREE.MeshBasicMaterial({ visible: false });
-      planeMesh = new THREE.Mesh(planeGeo, planeMat);
-      scene.add(planeMesh);
 
       camera.position.z = Math.max(width, height) * 1.1;
       particlesReady = true;
@@ -398,21 +323,6 @@ export default function ParticlePortrait({
 
       const elapsed = clock.getElapsedTime();
 
-      if (planeMesh) {
-        raycaster.setFromCamera(pointerNDC, camera);
-        const hit = raycaster.intersectObject(planeMesh)[0];
-        if (hit) {
-          const width = touchCanvas.width;
-          const height = touchCanvas.height;
-          const x = (hit.uv.x) * width;
-          const y = (1 - hit.uv.y) * height;
-          trail.unshift({ x, y, age: 0 });
-          if (trail.length > 30) trail.pop();
-        }
-      }
-
-      drawTouchTexture();
-
       if (particles) {
         particles.material.uniforms.uTime.value = elapsed;
 
@@ -432,8 +342,6 @@ export default function ParticlePortrait({
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
       window.removeEventListener('loader:complete', handleLoaderComplete);
-      container.removeEventListener('mousemove', handleMouseMove);
-      container.removeEventListener('touchmove', handleTouchMove);
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
