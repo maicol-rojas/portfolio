@@ -1,22 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-    --font-display: 'Fraunces', serif;
-    --font-sans: 'Work Sans', sans-serif;
     --font-nightwatch: 'The Night Watch', serif;
+    --font-satoshi: 'Satoshi', sans-serif;
+}
+
+:root {
+    --theme-bg: #f3eee5;
+    --theme-fg: #0b0b0b;
 }
 
 @layer base {
     body {
-        background-color: #fffdf1;
+        background-color: var(--theme-bg);
         position: relative;
         overflow-x: hidden;
-        font-family: "Newsreader", serif;
+        font-family: "Inconsolata", serif;
         font-optical-sizing: auto;
         font-style: normal;
-        color: #3b6d11;
-
-
+        color: var(--theme-fg);
     }
 
     body::before {
@@ -35,7 +37,7 @@
 
     @font-face {
         font-family: 'The Night Watch';
-        src: url('/fonts/TheNightWatch.ttf') format('opentype');
+        src: url('/fonts/biggerdisplay.otf') format('opentype');
         font-weight: 400;
         font-style: normal;
         font-display: swap;
