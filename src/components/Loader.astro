@@ -13,7 +13,7 @@ const resources = [
 const year = new Date().getFullYear();
 ---
 
-<div id="loader-overlay" class="fixed inset-0 z-[9999] bg-[#20262a] text-white">
+<div id="loader-overlay" class="fixed inset-0 z-9999 bg-[#20262a] text-white">
     <div class="grid grid-cols-12 h-full w-full px-6 py-8 md:px-12 md:py-10">
         <section class="col-span-12 md:col-span-4 flex flex-col min-h-0 pr-4">
             <p class="uppercase text-[11px] tracking-widest opacity-60 mb-3">RESOURCES</p>
@@ -25,13 +25,11 @@ const year = new Date().getFullYear();
         </section>
 
         <section
-            class="col-span-12 md:col-span-4 flex flex-col items-center justify-center order-first md:order-none mb-10 md:mb-0"
+            class="col-span-12 md:col-span-4 flex flex-col items-center justify-center order-first md:order-0 mb-10 md:mb-0"
         >
             <p class="uppercase text-[11px] tracking-widest opacity-60 mb-4">LOADING</p>
             <p id="loader-percent" class="font-nightwatch text-[1rem] leading-none">0%</p>
-            <div
-                class="w-full max-w-[220px] h-[2px] bg-white/15 mt-6 relative overflow-hidden"
-            >
+            <div class="w-full max-w-55 h-0.5 bg-white/15 mt-6 relative overflow-hidden">
                 <div
                     id="loader-bar"
                     class="absolute inset-y-0 left-0 bg-white"

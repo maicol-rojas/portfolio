@@ -1,5 +1,5 @@
 ---
-const { variant = "default" } = Astro.props;
+const { variant = "default", showThemeToggle = true } = Astro.props;
 
 const now = new Date();
 const today = now
@@ -58,15 +58,19 @@ const navItems = [
         )
     }
 
-    <button
-        id="theme-toggle"
-        type="button"
-        class="theme-toggle"
-        aria-label="Cambiar combinación de color"
-        title="Cambiar color"
-    >
-        ◐
-    </button>
+    {
+        showThemeToggle && (
+            <button
+                id="theme-toggle"
+                type="button"
+                class="theme-toggle"
+                aria-label="Cambiar combinación de color"
+                title="Cambiar color"
+            >
+                ◐
+            </button>
+        )
+    }
 </header>
 
 <script>
@@ -77,6 +81,12 @@ const navItems = [
         { bg: "#ee6c4d", fg: "#20201f" },
         { bg: "#f3eee5", fg: "#0b0b0b" },
         { bg: "#ff6044", fg: "#121313" },
+        { bg: "#0b1a28", fg: "#e77109" },
+        { bg: "#111111", fg: "#f4ede4" },
+        { bg: "#000000", fg: "#dc143c" },
+        { bg: "#2c2c2c", fg: "#e8b59e" },
+        { bg: "#2c2c2c", fg: "#dcc9a9" },
+        { bg: "#2c2c2c", fg: "#b83a2d" },
     ];
 
     let index = 0;

@@ -5,11 +5,22 @@ import Footer from "../components/Footer.astro";
 import Loader from "../components/Loader.astro";
 import ClickSound from "../components/ClickSound.astro";
 
-const { navVariant = "default", hideFooter = false } = Astro.props;
+const {
+	navVariant = "default",
+	hideFooter = false,
+	showThemeToggle = true,
+	initialBg,
+	initialFg,
+} = Astro.props;
+
+const themeOverride =
+	initialBg && initialFg
+		? `--theme-bg: ${initialBg}; --theme-fg: ${initialFg};`
+		: undefined;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style={themeOverride}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -17,7 +28,7 @@ const { navVariant = "default", hideFooter = false } = Astro.props;
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap"
 			rel="stylesheet"
 		/>
 		<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
@@ -29,7 +40,7 @@ const { navVariant = "default", hideFooter = false } = Astro.props;
 	<body class="px-2 h-dvh flex flex-col overflow-hidden">
 		<ClickSound />
 		<Loader />
-		<Navbar variant={navVariant} />
+		<Navbar variant={navVariant} showThemeToggle={showThemeToggle} />
 		<slot />
 		{!hideFooter && <Footer />}
 	</body>
