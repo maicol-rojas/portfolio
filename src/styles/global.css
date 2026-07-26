@@ -87,3 +87,28 @@
         }
     }
 }
+
+@keyframes page-rise-in {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 2;
+    animation: page-rise-in 0.9s cubic-bezier(0.76, 0, 0.24, 1) both;
+}

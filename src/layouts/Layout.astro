@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import ClickSound from "../components/ClickSound.astro";
+import { ClientRouter } from "astro:transitions";
 
 const { navVariant = "default", hideFooter = false } = Astro.props;
 ---
@@ -23,6 +24,7 @@ const { navVariant = "default", hideFooter = false } = Astro.props;
 
 		<meta name="generator" content={Astro.generator} />
 		<title>maicol rojas - portfolio</title>
+		<ClientRouter />
 	</head>
 
 	<body class="px-2 h-dvh flex flex-col overflow-hidden">
