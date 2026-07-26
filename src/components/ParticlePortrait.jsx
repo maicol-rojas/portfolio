@@ -169,23 +169,12 @@ export default function ParticlePortrait({
     let particles = null;
     let introStart = null;
     let particlesReady = false;
-    // El Loader (overlay de carga inicial) cubre toda la pantalla; si la
-    // animación de dispersión arranca antes de que termine, transcurre
-    // invisible detrás del overlay. Esperamos su señal de "listo" antes de
-    // iniciar el intro.
-    let loaderReady = window.__loaderDone === true;
 
     function maybeStartIntro() {
-      if (particlesReady && loaderReady && introStart === null) {
+      if (particlesReady && introStart === null) {
         introStart = clock.getElapsedTime();
       }
     }
-
-    function handleLoaderComplete() {
-      loaderReady = true;
-      maybeStartIntro();
-    }
-    window.addEventListener('loader:complete', handleLoaderComplete);
 
     // --- Construcción de las partículas a partir de la imagen
     const loader = new THREE.TextureLoader();
@@ -341,7 +330,6 @@ export default function ParticlePortrait({
       destroyed = true;
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('loader:complete', handleLoaderComplete);
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);

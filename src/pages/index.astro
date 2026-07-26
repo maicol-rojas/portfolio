@@ -4,20 +4,30 @@ import ParticlePortrait from "../components/ParticlePortrait.jsx";
 ---
 
 <Layout>
-    <main class="grid grid-cols-1 md:grid-cols-11 flex-1 min-h-0 px-8 py-6">
-        <section class="hidden md:flex md:col-span-1 items-center justify-start">
+    <main class="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] flex-1 min-h-0 px-8 py-6">
+        <section class="hidden md:flex items-center justify-start">
             <span class="vertical-text">SOFTWARE ENGINEER</span>
         </section>
 
-        <section class="col-span-1 md:col-span-9 flex flex-col justify-center">
-            <ParticlePortrait
-                client:only="react"
-                imageSrc="/images/particle-index-reference.jpg"
-                className="w-full h-full"
-            />
+        <section class="flex flex-row min-w-0">
+            <div class="brutalist-text-col">
+                <div class="brutalist-text">
+                    <span class="brutalist-text--lg">CREATIVE</span>
+                    <span class="brutalist-text--outline">FULLSTACK</span>
+                    <span class="brutalist-text--lg">DEVELOPER</span>
+                </div>
+            </div>
+
+            <div class="portrait-col">
+                <ParticlePortrait
+                    client:only="react"
+                    imageSrc="/images/particle-index-reference.jpg"
+                    className="w-full h-full"
+                />
+            </div>
         </section>
 
-        <section class="col-span-1 flex md:flex justify-end items-center mt-2 md:mt-0">
+        <section class="flex items-center justify-end mt-2 md:mt-0">
             <span class="vertical-text resume-text cursor-pointer">DOWNLOAD RESUME</span>
         </section>
     </main>
@@ -59,6 +69,46 @@ import ParticlePortrait from "../components/ParticlePortrait.jsx";
 
         .resume-text:hover::after {
             transform: scaleY(1);
+        }
+
+        .brutalist-text-col {
+            display: flex;
+            flex-shrink: 0;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .brutalist-text {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            margin-left: 6rem;
+        }
+
+        .brutalist-text span {
+            font-family: var(--font-satoshi);
+            font-weight: 900;
+            font-size: clamp(40px, 7vw, 96px);
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        .brutalist-text span.brutalist-text--lg {
+            font-size: clamp(50px, 8.5vw, 124px);
+        }
+
+        .brutalist-text span.brutalist-text--outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--theme-fg);
+        }
+
+        .portrait-col {
+            flex: 1;
+            min-width: 0;
+            margin-left: -3rem;
         }
     </style>
 </Layout>
