@@ -2,25 +2,13 @@
 import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
-import Loader from "../components/Loader.astro";
 import ClickSound from "../components/ClickSound.astro";
 
-const {
-	navVariant = "default",
-	hideFooter = false,
-	showThemeToggle = true,
-	initialBg,
-	initialFg,
-} = Astro.props;
-
-const themeOverride =
-	initialBg && initialFg
-		? `--theme-bg: ${initialBg}; --theme-fg: ${initialFg};`
-		: undefined;
+const { navVariant = "default", hideFooter = false } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" style={themeOverride}>
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -39,8 +27,7 @@ const themeOverride =
 
 	<body class="px-2 h-dvh flex flex-col overflow-hidden">
 		<ClickSound />
-		<Loader />
-		<Navbar variant={navVariant} showThemeToggle={showThemeToggle} />
+		<Navbar variant={navVariant} />
 		<slot />
 		{!hideFooter && <Footer />}
 	</body>
