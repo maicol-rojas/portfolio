@@ -17,7 +17,7 @@
         overflow: hidden;
         height: 18px;
 
-        font-family: "Inconsolata", monospace;
+        font-family: var(--font-satoshi);
         font-size: 14px;
         font-weight: 700;
         letter-spacing: 1px;
@@ -48,12 +48,14 @@
     }
 
     .scroll-text {
-        font-family: "Inconsolata", monospace;
+        font-family: var(--font-satoshi);
         font-size: 14px;
         font-weight: 700;
         letter-spacing: 1px;
         line-height: 18px;
-        animation: pulse 2s ease-in-out infinite;
+        animation:
+            footer-drop-in 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.15s both,
+            pulse 2s ease-in-out 0.75s infinite;
     }
 
     @keyframes pulse {
@@ -63,6 +65,29 @@
         }
         50% {
             opacity: 0.4;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        footer > .items-text:first-child {
+            opacity: 0;
+            animation: footer-drop-in 0.6s cubic-bezier(0.76, 0, 0.24, 1) both;
+        }
+
+        footer > .items-text:last-child {
+            opacity: 0;
+            animation: footer-drop-in 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.3s both;
+        }
+    }
+
+    @keyframes footer-drop-in {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 </style>
