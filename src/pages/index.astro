@@ -71,6 +71,30 @@ import ParticlePortrait from "../components/ParticlePortrait.jsx";
             transform: scaleY(1);
         }
 
+        @media (prefers-reduced-motion: no-preference) {
+            .vertical-text:not(.resume-text) {
+                opacity: 0;
+                animation: text-in-left 0.7s cubic-bezier(0.76, 0, 0.24, 1) both;
+            }
+
+            .vertical-text.resume-text {
+                opacity: 0;
+                animation: text-in-right 0.7s cubic-bezier(0.76, 0, 0.24, 1) both;
+            }
+        }
+
+        @keyframes text-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         .brutalist-text-col {
             display: flex;
             flex-shrink: 0;
@@ -103,6 +127,56 @@ import ParticlePortrait from "../components/ParticlePortrait.jsx";
         .brutalist-text span.brutalist-text--outline {
             color: transparent;
             -webkit-text-stroke: 1.5px var(--theme-fg);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .brutalist-text span:nth-child(1) {
+                animation: text-in-top 0.7s cubic-bezier(0.76, 0, 0.24, 1) both;
+            }
+
+            .brutalist-text span:nth-child(2) {
+                animation: text-in-left 0.7s cubic-bezier(0.76, 0, 0.24, 1) 0.15s both;
+            }
+
+            .brutalist-text span:nth-child(3) {
+                animation: text-in-bottom 0.7s cubic-bezier(0.76, 0, 0.24, 1) 0.3s both;
+            }
+        }
+
+        @keyframes text-in-top {
+            from {
+                opacity: 0;
+                transform: translateY(-60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes text-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes text-in-bottom {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .portrait-col {
