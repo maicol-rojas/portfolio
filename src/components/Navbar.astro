@@ -23,14 +23,16 @@ const navItems = [
 ];
 ---
 
-<header class="flex flex-row items-center justify-between py-6 px-4">
-    <a
-        href={variant === "nav" ? "/" : "#hero"}
-        class="brand-text"
-        data-text="MAICOL ROJAS"
-    >
-        <span>MAICOL ROJAS</span>
-    </a>
+<header
+    class={`flex flex-row items-center py-6 px-4 ${variant === "default" ? "justify-between" : "justify-end"}`}
+>
+    {
+        variant === "default" && (
+            <a href="#hero" class="brand-text" data-text="MAICOL ROJAS">
+                <span>MAICOL ROJAS</span>
+            </a>
+        )
+    }
 
     {
         variant === "default" && (
@@ -98,7 +100,7 @@ const navItems = [
         overflow: hidden;
         height: 18px;
 
-        font-family: "Inconsolata", monospace;
+        font-family: var(--font-satoshi);
         font-size: 14px;
         font-weight: 700;
         letter-spacing: 1px;
@@ -113,7 +115,7 @@ const navItems = [
     }
 
     .date-text {
-        font-family: "Inconsolata", monospace;
+        font-family: var(--font-satoshi);
         font-size: 14px;
         font-weight: 700;
         letter-spacing: 1px;
