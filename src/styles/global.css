@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-    --font-nightwatch: 'The Night Watch', serif;
     --font-satoshi: 'Satoshi', sans-serif;
 }
 
@@ -15,7 +14,7 @@
         background-color: var(--theme-bg);
         position: relative;
         overflow-x: hidden;
-        font-family: "Inconsolata", serif;
+        font-family: var(--font-satoshi);
         font-optical-sizing: auto;
         font-style: normal;
         color: var(--theme-fg);
@@ -33,14 +32,6 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         animation: grain-shift 9s steps(6) infinite;
         z-index: 9999;
-    }
-
-    @font-face {
-        font-family: 'The Night Watch';
-        src: url('/fonts/biggerdisplay.otf') format('opentype');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
     }
 
     @keyframes grain-shift {
